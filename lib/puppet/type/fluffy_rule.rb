@@ -92,7 +92,12 @@ Puppet::Type.newtype(:fluffy_rule) do
   end
 
   newproperty(:ctstate, :array_matching => :all) do
-    desc 'Conntrack state'
+    desc 'Conntrack state(s)'
+
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
 
     def insync?(is)
       is.each do |value|
@@ -118,14 +123,19 @@ Puppet::Type.newtype(:fluffy_rule) do
   end
 
   newproperty(:negate_state, :boolean => true) do
-    desc 'Negate connection state'
+    desc 'Negate connection state(s)'
 
     defaultto(false)
     newvalues(true,false)
   end
 
   newproperty(:state, :array_matching => :all) do
-    desc 'Connection state'
+    desc 'Connection state(s)'
+
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
 
     def insync?(is)
       is.each do |value|
@@ -160,6 +170,11 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:src_address_range, :array_matching => :all) do
     desc 'Source range address(es)'
 
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
+
     def insync?(is)
       is.each do |value|
         return false unless @should.include?(value)
@@ -192,6 +207,11 @@ Puppet::Type.newtype(:fluffy_rule) do
 
   newproperty(:dst_address_range, :array_matching => :all) do
     desc 'Destination range address(es)'
+
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
 
     def insync?(is)
       is.each do |value|
@@ -252,6 +272,11 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:src_address, :array_matching => :all) do
     desc 'Source address(es)'
 
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
+
     def insync?(is)
       is.each do |value|
         return false unless @should.include?(value)
@@ -284,6 +309,11 @@ Puppet::Type.newtype(:fluffy_rule) do
 
   newproperty(:dst_address, :array_matching => :all) do
     desc 'Destination address(es)'
+
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
 
     def insync?(is)
       is.each do |value|
@@ -318,6 +348,11 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:src_service, :array_matching => :all) do
     desc 'Source services(s)'
 
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
+
     def insync?(is)
       is.each do |value|
         return false unless @should.include?(value)
@@ -351,6 +386,11 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:dst_service, :array_matching => :all) do
     desc 'Destination services(s)'
 
+    # convert property to Array
+    munge do |value|
+      value.is_a?(Array) ? value : [value]
+    end
+
     def insync?(is)
       is.each do |value|
         return false unless @should.include?(value)
@@ -382,7 +422,7 @@ Puppet::Type.newtype(:fluffy_rule) do
   end
 
   newproperty(:set_mss) do
-    desc 'Set maximum segement size (MSS)'
+    desc 'Set maximum segment size (MSS)'
 
     validate do |value|
       if value != :absent

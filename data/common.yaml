@@ -17,6 +17,27 @@ lookup_options:
       strategy: deep
 fluffy::opts:
   max_sessions: 10
+fluffy::logging_opts:
+  version: 1
+  disable_existing_loggers: false
+  formatters:
+    standard:
+      format: "%{literal('%')}(asctime)s [%{literal('%')}(levelname)s] %{literal('%')}(name)s: %{literal('%')}(message)s"
+  handlers:
+    console:
+      formatter: "standard"
+      class: "logging.StreamHandler"
+      stream: "ext://sys.stdout"
+  loggers:
+    "fluffy":
+      handlers:
+        - "console"
+      level: "INFO"
+      propagate: true
+    "werkzeug":
+      handlers:
+        - "console"
+      level: "ERROR"
 fluffy::addressbook:
   admins:
     address: '0.0.0.0/0'
@@ -125,7 +146,6 @@ fluffy::config_file: "%{lookup('fluffy::config_dir')}/fluffy.yaml"
 fluffy::config_file_manage: true
 fluffy::logging_file: "%{lookup('fluffy::config_dir')}/logging.yaml"
 fluffy::logging_file_manage: false
-fluffy::logging_opts: {}
 fluffy::rollback_checks:
   ssh: {}
   fluffy_api: {}
