@@ -1,5 +1,8 @@
 type Fluffy::Rollback_check = Struct[{
-  Optional[interpreter] => String,
-  Optional[script] => Optional[String],
+  Optional["type"] => Enum["tcp", "exec"],
+  Optional[command] => Optional[String],
+  Optional[host] => Optional[String],
+  Optional[port] => Optional[Integer[1, 65535]],
+  Optional[timeout] => Optional[Integer[1]],
   Optional[ensure] => Enum["present", "absent"]
 }]

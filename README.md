@@ -232,8 +232,12 @@ Fluffy rollback checks in the form of {'rollback_name' => { .. }}
 Defaults to:
 ```yaml
 fluffy::rollback_checks:
-  ssh: {}
-  fluffy_api: {}
+  ssh:
+    type: tcp
+    port: 22
+  fluffy_api:
+    type: tcp
+    port: 8676
 ```
 
 ##### `data_dir` (optional)
@@ -534,23 +538,30 @@ fluffy_confirm {"session_name": }
 ##### `name` (optional)
 The session name. The only valid value is `puppet`.
 
-### Defined Types
-
-#### fluffy::rollback_script
-`rollback_script` manages Fluffy rollback check scripts.
+#### fluffy_rollback_check
+`fluffy_rollback_check` manages Fluffy rollback checks.
 
 ```
-fluffy::rollback_script {"<check_name>": }
+fluffy_rollback_check {"<check_name>": }
 ```
 
 ##### `name` (required)
 Rollback check name
 
-##### `interpreter` (optional)
-Intepreter to use when executing the script. Defaults to `/bin/sh`.
+##### `type` (optional)
+Check type. Valid values are `tcp`, `exec`.
 
-##### `script` (optional)
-Script content. If `undef`, the script will be searched under the *files/rollback.d* directory in the module.
+##### `command` (optional)
+Command to execute.
+
+##### `host` (optional)
+TCP host
+
+##### `port` (optional)
+TCP port
+
+##### `timeout` (optional)
+Check timeout in seconds. Defaults to `5`.
 
 ##### `ensure` (optional)
 Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.

@@ -147,8 +147,12 @@ fluffy::config_file_manage: true
 fluffy::logging_file: "%{lookup('fluffy::config_dir')}/logging.yaml"
 fluffy::logging_file_manage: false
 fluffy::rollback_checks:
-  ssh: {}
-  fluffy_api: {}
+  ssh:
+    type: tcp
+    port: 22
+  fluffy_api:
+    type: tcp
+    port: 8676
 fluffy::gem_dependencies:
   "fluffy-ruby": {}
 fluffy::packages:

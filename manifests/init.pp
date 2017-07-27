@@ -68,7 +68,7 @@ class fluffy (
   }
 
   $rollback_checks.each |String $rollback_name, Fluffy::Rollback_check $rollback| {
-    fluffy::rollback_script {$rollback_name:
+    fluffy_rollback_check {$rollback_name:
       * => $rollback
     }
   }
