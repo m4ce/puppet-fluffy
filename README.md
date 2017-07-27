@@ -19,7 +19,7 @@ This module implements native types and providers to manage Fluffy. The provider
 
 ## Module Description
 
-The fluffy module allows to automate the configuration and deployment of Fluffy interfaces, chains, services, addressbook and rules.
+The fluffy module allows to automate the configuration and deployment of Fluffy interfaces, chains, services, addressbook, rules and rollback checks.
 
 <a name="setup"/>
 
@@ -224,6 +224,16 @@ fluffy::rules:
     limit: '2/min'
     log_level: 'warning'
     log_prefix: 'Fluffy CHAIN=INPUT '
+```
+
+##### `rollback_checks` (optional)
+Fluffy rollback checks in the form of {'rollback_name' => { .. }}
+
+Defaults to:
+```yaml
+fluffy::rollback_checks:
+  ssh: {}
+  fluffy_api: {}
 ```
 
 ##### `data_dir` (optional)
@@ -487,6 +497,42 @@ Comment. Defaults to `absent`.
 
 ##### `ensure` (optional)
 Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+
+#### fluffy_test
+`fluffy_test` manages the Fluffy test process. This will only run upon receiving refresh events.
+
+```
+fluffy_test {"session_name": }
+```
+
+##### `name` (optional)
+The session name. The only valid value is `puppet`.
+
+#### fluffy_commit
+`fluffy_commit` manages the Fluffy commit process. This will only run upon receiving refresh events.
+
+```
+fluffy_commit {"session_name": }
+```
+
+##### `name` (optional)
+The session name. The only valid value is `puppet`.
+
+##### `rollback` (optional)
+Enable rollback. Defaults to `false`.
+
+##### `rollback_interval` (optional)
+Rollback configuration after a certain period of time unless confirmed. Defaults to `0`.
+
+#### fluffy_confirm
+`fluffy_confirm` manages the Fluffy commit-/confirm process. This will only run upon receiving refresh events.
+
+```
+fluffy_confirm {"session_name": }
+```
+
+##### `name` (optional)
+The session name. The only valid value is `puppet`.
 
 <a name="hiera"/>
 
