@@ -10,15 +10,21 @@
 6. [Contact](#contact)
 
 <a name="overview"/>
+
 ## Overview
+
 This module implements native types and providers to manage Fluffy. The providers are *fully idempotent*.
 
 <a name="module-description"/>
+
 ## Module Description
-The fliffy module allows to automate the configuration and deployment of Fluffy interfaces, chains, services, addressbook and rules.
+
+The fluffy module allows to automate the configuration and deployment of Fluffy interfaces, chains, services, addressbook and rules.
 
 <a name="setup"/>
+
 ## Setup
+
 The module requires the [fluffy-ruby](https://rubygems.org/gems/fluffy-ruby) rubygem. It also requires Puppet >= 4.0.0.
 
 If you are using Puppet AIO, you may want to include the gem as part of the base installation. If not, you can install it as follows:
@@ -34,8 +40,11 @@ include fluffy
 ```
 
 <a name="reference"/>
+
 ## Reference
+
 ### Classes
+
 #### fluffy
 `fluffy`
 
@@ -480,9 +489,13 @@ Comment. Defaults to `absent`.
 Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
 
 <a name="hiera"/>
+
 ## Hiera integration
+
 The entire module data is driven via Hiera.
 
 <a name="contact"/>
+
 ## Contact
+
 Matteo Cerutti - matteo.cerutti@hotmail.co.uk
