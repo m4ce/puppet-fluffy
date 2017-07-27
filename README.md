@@ -534,6 +534,27 @@ fluffy_confirm {"session_name": }
 ##### `name` (optional)
 The session name. The only valid value is `puppet`.
 
+### Defined Types
+
+#### fluffy::rollback_script
+`rollback_script` manages Fluffy rollback check scripts.
+
+```
+fluffy::rollback_script {"<check_name>": }
+```
+
+##### `name` (required)
+Rollback check name
+
+##### `interpreter` (optional)
+Intepreter to use when executing the script. Defaults to `/bin/sh`.
+
+##### `script` (optional)
+Script content. If `undef`, the script will be searched under the *files/rollback.d* directory in the module.
+
+##### `ensure` (optional)
+Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+
 <a name="hiera"/>
 
 ## Hiera integration
