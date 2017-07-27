@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Managed by Puppet
+#
+
+if nc -w 5 `hostname -f` 22 &>/dev/null </dev/null; then
+  exit 0
+else
+  exit 1
+fi

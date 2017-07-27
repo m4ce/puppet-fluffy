@@ -1,0 +1,6 @@
+#!<%= $interpreter %>
+#
+# Managed by Puppet in the <%= $::environment %> environment
+#
+
+<%= $script %>
