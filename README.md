@@ -11,17 +11,14 @@
 
 <a name="overview"/>
 ## Overview
-
 This module implements native types and providers to manage Fluffy. The providers are *fully idempotent*.
 
 <a name="module-description"/>
 ## Module Description
-
 The fliffy module allows to automate the configuration and deployment of Fluffy interfaces, chains, services, addressbook and rules.
 
 <a name="setup"/>
 ## Setup
-
 The module requires the [fluffy-ruby](https://rubygems.org/gems/fluffy-ruby) rubygem. It also requires Puppet >= 4.0.0.
 
 If you are using Puppet AIO, you may want to include the gem as part of the base installation. If not, you can install it as follows:
@@ -38,9 +35,7 @@ include fluffy
 
 <a name="reference"/>
 ## Reference
-
 ### Classes
-
 #### fluffy
 `fluffy`
 
@@ -52,7 +47,7 @@ include fluffy
 Fluffy options in the form of {'option' => 'value'}.
 
 Defaults to:
-```
+```yaml
 fluffy::opts:
   max_sessions: 10
 ```
@@ -61,7 +56,7 @@ fluffy::opts:
 Fluffy logging options in the form of {'option' => 'value'}.
 
 Defaults to:
-```
+```yaml
 fluffy::logging_opts:
   version: 1
   disable_existing_loggers: false
@@ -89,7 +84,7 @@ fluffy::logging_opts:
 Fluffy interfaces in the form of {'interface_name' => { .. }}
 
 Defaults to:
-```
+```yaml
 fluffy::interfaces:
   loopback:
     interface: 'lo'
@@ -99,7 +94,7 @@ fluffy::interfaces:
 Fluffy addressbook in the form of {'address_name' => { .. }}
 
 Defaults to:
-```
+```yaml
 fluffy::addressbook:
   admins:
     address: '0.0.0.0/0'
@@ -111,7 +106,7 @@ fluffy::addressbook:
 Fluffy services in the form of {'service_name' => { .. }}
 
 Defaults to:
-```
+```yaml
 fluffy::services:
   dhcp:
     src_port:
@@ -137,7 +132,7 @@ fluffy::services:
 Fluffy chains in the form of {'chain_name' => { .. }}
 
 Defaults to:
-```
+```yaml
 fluffy::chains:
   "filter:FORWARD":
     policy: 'DROP'
@@ -155,7 +150,7 @@ fluffy::chains:
 Fluffy rules in the form of {'rule_name' => { .. }}
 
 Defaults to:
-```
+```yaml
 fluffy::rules:
   "filter:FORWARD:invalid_state":
     ctstate:
@@ -244,7 +239,7 @@ Whether we should manage Fluffy's logging file or not. Defaults to `true`.
 Rubygems dependencies for Fluffy
 
 Defaults to:
-```
+```yaml
 fluffy::gem_dependencies:
   "fluffy-ruby": {}
 ```
@@ -253,7 +248,7 @@ fluffy::gem_dependencies:
 Installation packages for Fluffy
 
 Defaults to:
-```
+```yaml
 fluffy::packages:
   "fluffy": {}
 ```
@@ -486,7 +481,6 @@ Whether the resource is present or not. Valid values are 'present', 'absent'. De
 
 <a name="hiera"/>
 ## Hiera integration
-
 The entire module data is driven via Hiera.
 
 <a name="contact"/>
