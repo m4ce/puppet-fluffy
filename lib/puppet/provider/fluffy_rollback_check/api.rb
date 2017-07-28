@@ -18,7 +18,7 @@ Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
 
   def self.instances
     instances = []
-    checks = session.rollback_checks.get
+    checks = session.checks.get
     checks.each do |name, check|
       instances << new(
         :name => name,
@@ -48,7 +48,7 @@ Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
 
   def create
     begin
-      session.rollback_checks.add(name: resource[:name], type: resource[:type], host: resource[:host], port: resource[:port], timeout: resource[:timeout], command: resource[:command])
+      session.checks.add(name: resource[:name], type: resource[:type], host: resource[:host], port: resource[:port], timeout: resource[:timeout], command: resource[:command])
     rescue ::Fluffy::APIError => e
       fail "#{e.message} (#{e.error})"
     end
@@ -57,7 +57,7 @@ Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
   end
 
   def destroy
-    session.rollback_checks.delete(name: resource[:name])
+    session.checks.delete(name: resource[:name])
     @property_hash.clear
   end
 
@@ -92,7 +92,7 @@ Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
   def flush
     unless @property_flush.empty?
       begin
-        session.rollback_checks.update(name: resource[:name], **@property_flush)
+        session.checks.update(name: resource[:name], **@property_flush)
       rescue ::Fluffy::APIError => e
         fail "#{e.message} (#{e.error})"
       end

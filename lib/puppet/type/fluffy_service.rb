@@ -13,11 +13,6 @@ Puppet::Type.newtype(:fluffy_service) do
   newproperty(:dst_port, :array_matching => :all) do
     desc 'Destination port(s)'
 
-    # convert property to Array
-    munge do |value|
-      value.is_a?(Array) ? value : [value]
-    end
-
     defaultto([])
 
     def insync?(is)
@@ -43,11 +38,6 @@ Puppet::Type.newtype(:fluffy_service) do
 
   newproperty(:src_port, :array_matching => :all) do
     desc 'Source port(s)'
-
-    # convert property to Array
-    munge do |value|
-      value.is_a?(Array) ? value : [value]
-    end
 
     defaultto([])
 

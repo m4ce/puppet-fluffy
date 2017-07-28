@@ -13,11 +13,6 @@ Puppet::Type.newtype(:fluffy_address) do
   newproperty(:address, :array_matching => :all) do
     desc 'A valid CIDR or IP range'
 
-    # convert property to Array
-    munge do |value|
-      value.is_a?(Array) ? value : [value]
-    end
-
     def insync?(is)
       is.each do |value|
         return false unless @should.include?(value)
@@ -28,14 +23,6 @@ Puppet::Type.newtype(:fluffy_address) do
       end
 
       true
-    end
-
-    def should_to_s(newvalue = @should)
-      if newvalue
-        newvalue.inspect
-      else
-        nil
-      end
     end
   end
 

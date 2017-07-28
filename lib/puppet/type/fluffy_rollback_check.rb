@@ -17,38 +17,43 @@ Puppet::Type.newtype(:fluffy_rollback_check) do
   end
 
   newproperty(:host) do
-    desc 'Host for TCP check'
+    desc 'TCP host'
 
     defaultto('0.0.0.0')
   end
 
   newproperty(:port) do
-    desc 'Port for TCP check'
+    desc 'TCP port'
 
     validate do |value|
-      if self[:ensure] != :absent
+      if value != :absent
         fail("Port must be a valid Integer in #{self[:name]}") unless value.is_a?(Integer)
       end
     end
+
+    defaultto(:absent)
   end
 
   newproperty(:timeout) do
     desc 'Check timeout'
 
     validate do |value|
-      if self[:ensure] != :absent
-        fail("Timeout must be a positive Integer in #{self[:name]}") unless value.is_a?(Integer) or value > 0
-      end
+      fail("Timeout must be a positive Integer in #{self[:name]}") unless value.is_a?(Integer)
     end
+
+    defaultto(5)
   end
 
   newproperty(:command) do
     desc 'Command to run for exec type of checks'
+
+    defaultto(:absent)
   end
 
   validate do
     if self[:ensure] != :absent
-      fail("Command is required when check type is 'exec' in #{self[:name]}") if self[:type] == :exec and self[:command].nil?
+      fail("Check type is required in #{self[:name]}") if self[:type].nil?
+      fail("Command is required for exec check types in #{self[:name]}") if self[:type] == :exec and self[:command] == :absent
     end
   end
 

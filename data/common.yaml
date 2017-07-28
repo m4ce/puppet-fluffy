@@ -40,7 +40,7 @@ fluffy::logging_opts:
       level: "ERROR"
 fluffy::addressbook:
   admins:
-    address: '0.0.0.0/0'
+    address: any
   loopback_net:
     address: '127.0.0.0/8'
 fluffy::interfaces:
