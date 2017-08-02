@@ -164,6 +164,7 @@ fluffy::packages:
 fluffy::service_image: "fluffy:latest"
 fluffy::service_opts:
   network_mode: "host"
+  privileged: true
   binds:
     - "%{lookup('fluffy::config_dir')}:%{lookup('fluffy::config_dir')}:ro"
     - "%{lookup('fluffy::data_dir')}:%{lookup('fluffy::data_dir')}:rw"
