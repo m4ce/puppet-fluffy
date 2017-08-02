@@ -226,12 +226,12 @@ fluffy::rules:
     log_prefix: 'Fluffy CHAIN=INPUT '
 ```
 
-##### `rollback_checks` (optional)
-Fluffy rollback checks in the form of {'rollback_name' => { .. }}
+##### `checks` (optional)
+Fluffy rollback checks in the form of {'check_name' => { .. }}
 
 Defaults to:
 ```yaml
-fluffy::rollback_checks:
+fluffy::checks:
   ssh:
     type: tcp
     port: 22
@@ -303,7 +303,7 @@ Whether the service is onboot enabled or not. Defaults to `true`.
 fluffy_chain {"<table>:<chain_name>": }
 ```
 
-##### `name` (required)
+##### `chain` (required)
 Chain name
 
 ##### `table` (required)
@@ -373,7 +373,7 @@ Whether the resource is present or not. Valid values are 'present', 'absent'. De
 fluffy_rule {"<table>:<chain>:<rule_name>": }
 ```
 
-##### `name` (required)
+##### `rule` (required)
 Rule name
 
 ##### `table` (required)
@@ -538,15 +538,15 @@ fluffy_confirm {"session_name": }
 ##### `name` (optional)
 The session name. The only valid value is `puppet`.
 
-#### fluffy_rollback_check
-`fluffy_rollback_check` manages Fluffy rollback checks.
+#### fluffy_check
+`fluffy_check` manages Fluffy rollback checks.
 
 ```
-fluffy_rollback_check {"<check_name>": }
+fluffy_check {"<check_name>": }
 ```
 
 ##### `name` (required)
-Rollback check name
+Check name
 
 ##### `type` (optional)
 Check type. Valid values are `tcp`, `exec`.
