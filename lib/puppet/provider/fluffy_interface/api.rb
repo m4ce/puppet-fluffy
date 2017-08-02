@@ -22,7 +22,8 @@ Puppet::Type.type(:fluffy_interface).provide(:api) do
     interfaces.each do |name, interface|
       instances << new(
         :name => name,
-        :interface => interface
+        :interface => interface,
+        :ensure => :present
       )
     end
     instances

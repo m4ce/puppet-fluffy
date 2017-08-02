@@ -12,7 +12,7 @@ class fluffy (
   Boolean $config_file_manage,
   String $logging_file,
   Boolean $logging_file_manage,
-  Fluffy::Rollback_checks $rollback_checks,
+  Fluffy::Checks $checks,
   Hash $gem_dependencies,
   Hash $packages,
   Enum["default", "docker"] $service_provider,
@@ -23,53 +23,47 @@ class fluffy (
   Enum["present", "absent", "stopped", "running"] $service_ensure,
   Boolean $service_enable
 ) {
-  include fluffy::install
-  include fluffy::config
-  include fluffy::service
+  #include fluffy::install
+  #include fluffy::config
+  #include fluffy::service
 
-  $addressbook.each |String $name, Fluffy::Address $address| {
-    fluffy_address {$name:
+  $addressbook.each |String $address_name, Fluffy::Address $address| {
+    fluffy_address {$address_name:
       * => $address
     }
   }
 
-  $interfaces.each |String $name, Fluffy::Interface $interface| {
-    fluffy_interface {$name:
+  $interfaces.each |String $interface_name, Fluffy::Interface $interface| {
+    fluffy_interface {$interface_name:
       * => $interface
     }
   }
 
-  $services.each |String $name, Fluffy::Service $service| {
-    fluffy_service {$name:
+  $services.each |String $service_name, Fluffy::Service $service| {
+    fluffy_service {$service_name:
       * => $service
     }
   }
 
-  $chains.each |String $name, Fluffy::Chain $chain| {
-    fluffy_chain {$name:
+  $chains.each |String $chain_name, Fluffy::Chain $chain| {
+    fluffy_chain {$chain_name:
       * => $chain
     }
   }
 
   # Puppet will preserve the order of the hash as described in the Hiera configuration
-  $prev_rule = undef
-  $rules.each |String $name, Fluffy::Rule $rule| {
-    fluffy_rule {$name:
-      * => $rule
-    }
-
-    if $prev_rule {
-      Fluffy_rule[$name] {
-        after_rule => $prev_rule
+  $rules.map |$k, $v| { {$k => $v } }.each |Integer $index, Hash $rule| {
+    $rule.each |String $k, Fluffy::Rule $v| {
+      fluffy_rule {$k:
+        index => $index,
+        * => $v
       }
     }
-
-    $prev_rule = $name
   }
 
-  $rollback_checks.each |String $rollback_name, Fluffy::Rollback_check $rollback| {
-    fluffy_rollback_check {$rollback_name:
-      * => $rollback
+  $checks.each |String $check_name, Fluffy::Check $check| {
+    fluffy_check {$check_name:
+      * => $check
     }
   }
 

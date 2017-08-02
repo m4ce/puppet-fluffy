@@ -5,8 +5,8 @@ rescue LoadError => detail
   require module_base + '../../../puppet_x/fluffy/api'
 end
 
-Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
-  desc "Manage Fluffy rollback checks"
+Puppet::Type.type(:fluffy_check).provide(:api) do
+  desc "Manage Fluffy checks"
 
   confine :feature => :fluffy_api
 
@@ -48,7 +48,12 @@ Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
 
   def create
     begin
-      session.checks.add(name: resource[:name], type: resource[:type], host: resource[:host], port: resource[:port], timeout: resource[:timeout], command: resource[:command])
+      session.checks.add(name: resource[:name],
+                         type: resource[:type],
+                         host: resource[:host] != :absent ? resource[:host] : nil,
+                         port: resource[:port] != :absent ? resource[:port] : nil,
+                         timeout: resource[:timeout], command:
+                         resource[:command] != :absent ? resource[:command] : nil)
     rescue ::Fluffy::APIError => e
       fail "#{e.message} (#{e.error})"
     end
@@ -74,15 +79,15 @@ Puppet::Type.type(:fluffy_rollback_check).provide(:api) do
   end
 
   def host=(value)
-    @property_flush[:host] = value
+    @property_flush[:host] = (value != :absent) ? value : nil
   end
 
   def port=(value)
-    @property_flush[:port] = value
+    @property_flush[:port] = (value != :absent) ? value : nil
   end
 
   def command=(value)
-    @property_flush[:command] = value
+    @property_flush[:command] = (value != :absent) ? value : nil
   end
 
   def timeout=(value)

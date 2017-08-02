@@ -7,6 +7,10 @@ Puppet::Type.newtype(:fluffy_rule) do
   end
 
   newparam(:name, :namevar => true) do
+    desc 'Friendly name'
+  end
+
+  newparam(:rule, :namevar => true) do
     desc 'Rule name'
     newvalues(/^[\w_]+/)
   end
@@ -19,7 +23,11 @@ Puppet::Type.newtype(:fluffy_rule) do
     desc 'Rule packet filtering table'
 
     defaultto(:filter)
-    newvalues(:filter, :nat, :mangle, :raw, :security)
+    newvalues(:filter,:nat,:mangle,:raw,:security)
+  end
+
+  newproperty(:index) do
+    desc 'Rule index'
   end
 
   newparam(:before_rule) do
@@ -46,8 +54,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_protocol, :boolean => true) do
     desc 'Negate protocol'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:protocol) do
@@ -60,8 +68,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_icmp_type, :boolean => true) do
     desc 'Negate ICMP type'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:icmp_type) do
@@ -74,8 +82,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_tcp_flags, :boolean => true) do
     desc 'Negate TCP flags'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:tcp_flags) do
@@ -87,8 +95,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_ctstate, :boolean => true) do
     desc 'Negate conntrack state'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:ctstate, :array_matching => :all) do
@@ -120,8 +128,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_state, :boolean => true) do
     desc 'Negate connection state(s)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:state, :array_matching => :all) do
@@ -153,8 +161,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_src_address_range, :boolean => true) do
     desc 'Negate source range address(es)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:src_address_range, :array_matching => :all) do
@@ -186,8 +194,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_dst_address_range, :boolean => true) do
     desc 'Negate destination range address(es)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:dst_address_range, :array_matching => :all) do
@@ -219,8 +227,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_in_interface, :boolean => true) do
     desc 'Negate input interface'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:in_interface) do
@@ -232,8 +240,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_out_interface, :boolean => true) do
     desc 'Negate output interface'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:out_interface) do
@@ -245,8 +253,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_src_address, :boolean => true) do
     desc 'Negate source address(es)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:src_address, :array_matching => :all) do
@@ -278,8 +286,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_dst_address, :boolean => true) do
     desc 'Negate destination address(es)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:dst_address, :array_matching => :all) do
@@ -311,8 +319,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_src_service, :boolean => true) do
     desc 'Negate source service(s)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:src_service, :array_matching => :all) do
@@ -344,8 +352,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:negate_dst_service, :boolean => true) do
     desc 'Negate destination service(s)'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:dst_service, :array_matching => :all) do
@@ -378,7 +386,7 @@ Puppet::Type.newtype(:fluffy_rule) do
     desc 'Reject with'
 
     defaultto(:absent)
-    newvalues(:absent, 'icmp-net-unreachable', 'icmp-host-unreachable', 'icmp-port-unreachable', 'icmp-proto-unreachable', 'icmp-net-prohibited', 'icmp-host-prohibited', 'icmp-admin-prohibited')
+    newvalues(:absent,'icmp-net-unreachable','icmp-host-unreachable','icmp-port-unreachable','icmp-proto-unreachable','icmp-net-prohibited','icmp-host-prohibited','icmp-admin-prohibited')
   end
 
   newproperty(:set_mss) do
@@ -396,8 +404,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   newproperty(:clamp_mss_to_pmtu, :boolean => true) do
     desc 'Clamp MSS to path MTU'
 
-    defaultto(false)
-    newvalues(true,false)
+    defaultto(:false)
+    newvalues(:true,:false)
   end
 
   newproperty(:to_src) do
@@ -434,7 +442,7 @@ Puppet::Type.newtype(:fluffy_rule) do
     desc 'Log level'
 
     defaultto(:absent)
-    newvalues(:absent, :emerg, :alert, :crit, :err, :warning, :notice, :info, :debug)
+    newvalues(:absent,:emerg,:alert,:crit,:err,:warning,:notice,:info,:debug)
   end
 
   newproperty(:comment) do
@@ -446,9 +454,10 @@ Puppet::Type.newtype(:fluffy_rule) do
   def self.title_patterns
     [
       [ /(^([^:]*)$)/,
-        [ [:name] ] ],
-      [ /^([^:]+):([^:]+):([^:]+)$$/,
-        [ [:table], [:chain], [:name] ]
+        [ [:name], [:rule] ]
+      ],
+      [ /(^([^:]+):([^:]+):([^:]+)$)/,
+        [ [:name], [:table], [:chain], [:rule] ]
       ]
     ]
   end

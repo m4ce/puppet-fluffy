@@ -6,6 +6,10 @@ Puppet::Type.newtype(:fluffy_chain) do
     defaultto(:present)
   end
 
+  newparam(:name, :namevar => true) do
+    desc 'Composite namevar'
+  end
+
   newparam(:chain, :namevar => true) do
     desc 'Fluffy chain'
   end
@@ -14,21 +18,23 @@ Puppet::Type.newtype(:fluffy_chain) do
     desc 'Fluffy routing table'
 
     defaultto(:filter)
-    newvalues(:filter, :nat, :mangle, :raw, :security)
+    newvalues(:filter,:nat,:mangle,:raw,:security)
   end
 
   newproperty(:policy) do
     desc 'Default policy'
+
     defaultto('ACCEPT')
-    newvalues('ACCEPT', 'DROP', 'RETURN')
+    newvalues('ACCEPT','DROP','RETURN')
   end
 
   def self.title_patterns
     [
-      [ /(^([^:]*)$)/,
-        [ [:chain] ] ],
-      [ /^([^:]+):([^:]+)$/,
-        [ [:table], [:chain] ]
+      [ /(^([^:]+)$)/,
+        [ [:name], [:chain] ]
+      ],
+      [ /(^([^:]+):([^:]+)$)/,
+        [ [:name], [:table], [:chain] ]
       ]
     ]
   end

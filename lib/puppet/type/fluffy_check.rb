@@ -1,5 +1,5 @@
-Puppet::Type.newtype(:fluffy_rollback_check) do
-  @doc = 'Manage Fluffy rollback checks'
+Puppet::Type.newtype(:fluffy_check) do
+  @doc = 'Manage Fluffy checks'
 
   ensurable do
     defaultvalues
@@ -7,7 +7,7 @@ Puppet::Type.newtype(:fluffy_rollback_check) do
   end
 
   newparam(:name, :namevar => true) do
-    desc 'Rollback check name'
+    desc 'Check name'
   end
 
   newproperty(:type) do

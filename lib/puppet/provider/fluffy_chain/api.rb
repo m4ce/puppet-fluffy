@@ -22,9 +22,10 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
     chains.each do |table_name, table|
       table.each do |chain_name, chain|
         instances << new(
-          :name => chain_name,
-          :table => table_name,
-          :policy => chain['policy']
+          :chain => chain_name,
+          :table => table_name.to_sym,
+          :policy => chain['policy'],
+          :ensure => :present
         )
       end
     end
@@ -34,7 +35,7 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
   def self.prefetch(resources)
     items = instances
     resources.each do |name, resource|
-      if provider = items.find { |item| item.name == name and item.table == resource[:table] }
+      if provider = items.find { |item| item.chain == resource[:chain] and item.table == resource[:table] }
         resources[name].provider = provider
       end
     end
@@ -46,7 +47,7 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
 
   def create
     begin
-      session.chains.add(name: resource[:name], table: resource[:table], policy: resource[:policy])
+      session.chains.add(name: resource[:chain], table: resource[:table], policy: resource[:policy])
     rescue ::Fluffy::APIError => e
       fail "#{e.message} (#{e.error})"
     end
@@ -55,7 +56,7 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
   end
 
   def destroy
-    session.chains.delete(name: resource[:name])
+    session.chains.delete(name: resource[:chain], table: resource[:table])
     @property_hash.clear
   end
 
@@ -74,7 +75,7 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
   def flush
     unless @property_flush.empty?
       begin
-        session.chains.update(name: resource[:name], table: resource[:table], policy: @property_flush[:policy])
+        session.chains.update(name: resource[:chain], table: resource[:table], policy: @property_flush[:policy])
       rescue ::Fluffy::APIError => e
         fail "#{e.message} (#{e.error})"
       end

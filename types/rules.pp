@@ -1,1 +1,1 @@
-type Fluffy::Rules = Hash[Pattern[/^[\w\d_]+/], Fluffy::Rule]
+type Fluffy::Rules = Hash[Pattern[/^([^:]+):([^:]+):([^:]+)$/], Fluffy::Rule]
