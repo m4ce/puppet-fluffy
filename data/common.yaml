@@ -161,7 +161,7 @@ fluffy::gem_dependencies:
     ensure: "0.0.14"
 fluffy::packages:
   "fluffy": {}
-fluffy::service_image: "fluffy:latest"
+fluffy::service_image: "m4ce/fluffy:latest"
 fluffy::service_opts:
   network_mode: "host"
   privileged: true
