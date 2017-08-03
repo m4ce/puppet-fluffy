@@ -90,7 +90,7 @@ fluffy::logging_opts:
 ```
 
 ##### `interfaces` (optional)
-Fluffy interfaces in the form of {'interface_name' => { .. }}
+Fluffy interfaces in the form of {'interface' => { .. }}
 
 Defaults to:
 ```yaml
@@ -100,7 +100,7 @@ fluffy::interfaces:
 ```
 
 ##### `addressbook` (optional)
-Fluffy addressbook in the form of {'address_name' => { .. }}
+Fluffy addressbook in the form of {'address' => { .. }}
 
 Defaults to:
 ```yaml
@@ -112,7 +112,7 @@ fluffy::addressbook:
 ```
 
 ##### `services` (optional)
-Fluffy services in the form of {'service_name' => { .. }}
+Fluffy services in the form of {'service' => { .. }}
 
 Defaults to:
 ```yaml
@@ -138,7 +138,7 @@ fluffy::services:
 ```
 
 ##### `chains` (optional)
-Fluffy chains in the form of {'<table>:<chain>' => { .. }}
+Fluffy chains in the form of {'table:chain' => { .. }}
 
 Defaults to:
 ```yaml
@@ -156,7 +156,7 @@ fluffy::chains:
 ```
 
 ##### `rules` (optional)
-Fluffy rules in the form of {'<table>:<chain>:<rule>' => { .. }}
+Fluffy rules in the form of {'table:chain:rule' => { .. }}
 
 Defaults to:
 ```yaml
@@ -227,7 +227,7 @@ fluffy::rules:
 ```
 
 ##### `checks` (optional)
-Fluffy rollback checks in the form of {'check_name' => { .. }}
+Fluffy rollback checks in the form of {'check' => { .. }}
 
 Defaults to:
 ```yaml
@@ -319,7 +319,7 @@ Whether the resource is present or not. Valid values are `present`, `absent`. De
 `fluffy_interface` manages Fluffy interfaces
 
 ```
-fluffy_interface {"interface_name": }
+fluffy_interface {"interface": }
 ```
 
 ##### `name` (required)
@@ -335,7 +335,7 @@ Whether the resource is present or not. Valid values are `present`, `absent`. De
 `fluffy_address` manages the Fluffy addressbook
 
 ```
-fluffy_address {"address_name": }
+fluffy_address {"address": }
 ```
 
 ##### `name` (required)
@@ -351,7 +351,7 @@ Whether the resource is present or not. Valid values are `present`, `absent`. De
 `fluffy_service` manages the Fluffy services
 
 ```
-fluffy_service {"service_name": }
+fluffy_service {"service": }
 ```
 
 ##### `name` (required)
@@ -370,7 +370,7 @@ Network protocol. Valid values are: `ip`, `tcp`, `udp`, `icmp`, `ipv6-icmp`, `es
 Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 ```
-fluffy_rule {"<table>:<chain>:<rule>": }
+fluffy_rule {"table:chain:rule": }
 ```
 
 ##### `rule` (required unless specified in the resource title)
@@ -503,7 +503,7 @@ Whether the resource is present or not. Valid values are `present`, `absent`. De
 `fluffy_test` manages the Fluffy test process. This will only run upon receiving refresh events.
 
 ```
-fluffy_test {"session_name": }
+fluffy_test {"session": }
 ```
 
 ##### `name` (optional)
@@ -513,7 +513,7 @@ The session name. The only valid value is `puppet`.
 `fluffy_commit` manages the Fluffy commit process. This will only run upon receiving refresh events.
 
 ```
-fluffy_commit {"session_name": }
+fluffy_commit {"session": }
 ```
 
 ##### `name` (optional)
@@ -529,7 +529,7 @@ Rollback configuration after a certain period of time unless confirmed. Defaults
 `fluffy_confirm` manages the Fluffy commit-/confirm process. This will only run upon receiving refresh events.
 
 ```
-fluffy_confirm {"session_name": }
+fluffy_confirm {"session": }
 ```
 
 ##### `name` (optional)
@@ -539,7 +539,7 @@ The session name. The only valid value is `puppet`.
 `fluffy_check` manages Fluffy rollback checks.
 
 ```
-fluffy_check {"<check_name>": }
+fluffy_check {"check": }
 ```
 
 ##### `name` (required)
