@@ -138,7 +138,7 @@ fluffy::services:
 ```
 
 ##### `chains` (optional)
-Fluffy chains in the form of {'chain_name' => { .. }}
+Fluffy chains in the form of {'<table>:<chain>' => { .. }}
 
 Defaults to:
 ```yaml
@@ -156,7 +156,7 @@ fluffy::chains:
 ```
 
 ##### `rules` (optional)
-Fluffy rules in the form of {'rule_name' => { .. }}
+Fluffy rules in the form of {'<table>:<chain>:<rule>' => { .. }}
 
 Defaults to:
 ```yaml
@@ -300,20 +300,20 @@ Whether the service is onboot enabled or not. Defaults to `true`.
 `fluffy_chain` manages Fluffy chains
 
 ```
-fluffy_chain {"<table>:<chain_name>": }
+fluffy_chain {"<table>:<chain>": }
 ```
 
-##### `chain` (required)
+##### `chain` (required unless specified in the resource title)
 Chain name
 
-##### `table` (required)
+##### `table` (required unless specified in the resource title)
 Packet filtering table. Valid values are: `filter`, `nat`, `mangle`, `raw`, `security`.
 
 ##### `policy` (optional_
 Default policy. Valid values are: `ACCEPT`, `DROP`, `RETURN`. Defaults to `ACCEPT`.
 
 ##### `ensure` (optional)
-Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 #### fluffy_interface
 `fluffy_interface` manages Fluffy interfaces
@@ -329,7 +329,7 @@ Interface name
 The actual network interface
 
 ##### `ensure` (optional)
-Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 #### fluffy_address
 `fluffy_address` manages the Fluffy addressbook
@@ -345,7 +345,7 @@ Address name
 List of one or more addresses. It can be a reference to another address in the addressbook, a valid CIDR or an IP range.
 
 ##### `ensure` (optional)
-Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 #### fluffy_service
 `fluffy_service` manages the Fluffy services
@@ -367,26 +367,23 @@ Destination port(s). Ports must be between 1-65535 or a valid port range.
 Network protocol. Valid values are: `ip`, `tcp`, `udp`, `icmp`, `ipv6-icmp`, `esp`, `ah`, `vrrp`, `igmp`, `ipencap`, `ipv4`, `ipv6`, `ospf`, `gre`, `cbt`, `sctp`, `pim`, `all`. Defaults to `all`.
 
 ##### `ensure` (optional)
-Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 ```
-fluffy_rule {"<table>:<chain>:<rule_name>": }
+fluffy_rule {"<table>:<chain>:<rule>": }
 ```
 
-##### `rule` (required)
+##### `rule` (required unless specified in the resource title)
 Rule name
 
-##### `table` (required)
+##### `table` (required unless specified in the resource title)
 Rule packet filtering table
 
-##### `chain` (required)
+##### `chain` (required unless specified in the resource title)
 Rule chain name
 
-##### `before_rule` (optional)
-Add the new rule before the specified rule name
-
-##### `after_rule` (optional)
-Add the new rule after the specified rule name
+##### `index` (optional)
+Add the new rule at the given index. By default, the rule will be added right at the end.
 
 ##### `action` (optional)
 Rule action. Valid values are: `absent`, `ACCEPT`, `DROP`, `REJECT`, `QUEUE`, `RETURN`, `DNAT`, `SNAT`, `LOG`, `MASQUERADE`, `REDIRECT`, `MARK`, `TCPMSS`. Defaults to `absent`.
@@ -500,7 +497,7 @@ Log level. Valid values are: `absent`, `emerg`, `alert`, `crit`, `err`, `warning
 Comment. Defaults to `absent`.
 
 ##### `ensure` (optional)
-Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 #### fluffy_test
 `fluffy_test` manages the Fluffy test process. This will only run upon receiving refresh events.
@@ -564,7 +561,7 @@ TCP port
 Check timeout in seconds. Defaults to `5`.
 
 ##### `ensure` (optional)
-Whether the resource is present or not. Valid values are 'present', 'absent'. Defaults to `present`.
+Whether the resource is present or not. Valid values are `present`, `absent`. Defaults to `present`.
 
 <a name="hiera"/>
 
