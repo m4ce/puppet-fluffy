@@ -6,6 +6,7 @@ class fluffy (
   Fluffy::Services $services,
   Fluffy::Chains $chains,
   Fluffy::Rules $rules,
+  Boolean $purge_rules,
   String $data_dir,
   String $config_dir,
   String $config_file,
@@ -49,6 +50,10 @@ class fluffy (
     fluffy_chain {$chain_name:
       * => $chain
     }
+  }
+
+  resources {'fluffy_rule':
+    purge => $purge_rules
   }
 
   fluffy_build_rules($rules).each |String $rule_name, Fluffy::Rule $rule| {

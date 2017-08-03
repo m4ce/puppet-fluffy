@@ -239,6 +239,9 @@ fluffy::checks:
     port: 8676
 ```
 
+##### `purge_rules` (optional)
+Purge unmanaged rules. Defaults to `true`.
+
 ##### `data_dir` (optional)
 Path to the Fluffy data directory. Defaults to `/var/lib/fluffy`.
 

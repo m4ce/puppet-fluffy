@@ -143,6 +143,7 @@ fluffy::rules:
    limit: '2/min'
    log_level: 'warning'
    log_prefix: 'Fluffy CHAIN=INPUT '
+fluffy::purge_rules: true
 fluffy::data_dir: "/var/lib/fluffy"
 fluffy::config_dir: "/etc/fluffy"
 fluffy::config_file: "%{lookup('fluffy::config_dir')}/fluffy.yaml"
