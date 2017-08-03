@@ -51,15 +51,10 @@ class fluffy (
     }
   }
 
-  # Puppet will preserve the order of the hash as described in the Hiera configuration
-  $rules.map |$k, $v| { {$k => $v } }.each |Integer $index, Hash $rule| {
-    $rule.each |String $k, Fluffy::Rule $v| {
-      fluffy_rule {$k:
-        index => $index,
-        * => $v
-      }
+  fluffy_build_rules($rules).each |String $rule_name, Fluffy::Rule $rule| {
+    fluffy_rule {$rule_name:
+      * => $rule
     }
-  }
 
   $checks.each |String $check_name, Fluffy::Check $check| {
     fluffy_check {$check_name:
