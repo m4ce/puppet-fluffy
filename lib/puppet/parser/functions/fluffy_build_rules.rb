@@ -4,7 +4,7 @@ Return a ordered list of Fluffy rules
 EOS
   ) do |arguments|
 
-    raise Puppet::ParseError, "fluffy_build_rules(): Wrong number of arguments given (#{arguments.size} for 1)") if arguments.size < 1
+    raise Puppet::ParseError, "fluffy_build_rules(): Wrong number of arguments given (#{arguments.size} for 1)" if arguments.size < 1
 
     ordered_rules = {}
     rules = arguments[0]
@@ -13,7 +13,7 @@ EOS
     rules.each do |name, rule|
       if rule['before_rule'] and rule['after_rule']
         raise Puppet::ParseError, "fluffy_build_rules(): 'before_rule' and 'after_rule' cannot be used together in rule #{name}"
-      if rule['before_rule']
+      elsif rule['before_rule']
         if rules[rule['before_rule']]
           rules_keys.delete(name)
           rules_keys.insert(rules_keys.index(rule['before_rule']), name)

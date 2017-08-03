@@ -153,7 +153,7 @@ fluffy::chains:
 ```
 
 ##### `rules` (optional)
-Fluffy rules in the form of {'table:chain:rule' => { .. }}
+Fluffy rules in the form of {'table:chain:rule' => { .. }}.
 
 Defaults to:
 ```yaml
@@ -222,6 +222,10 @@ fluffy::rules:
     log_level: 'warning'
     log_prefix: 'Fluffy CHAIN=INPUT '
 ```
+
+Rule ordering can be specified by using the following parameters: `before_rule`, `after_rule`.
+
+For instance, if you wanted to add a rule
 
 ##### `checks` (optional)
 Fluffy rollback checks in the form of {'check' => { .. }}
