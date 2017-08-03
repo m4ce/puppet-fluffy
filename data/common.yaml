@@ -148,7 +148,7 @@ fluffy::config_dir: "/etc/fluffy"
 fluffy::config_file: "%{lookup('fluffy::config_dir')}/fluffy.yaml"
 fluffy::config_file_manage: true
 fluffy::logging_file: "%{lookup('fluffy::config_dir')}/logging.yaml"
-fluffy::logging_file_manage: false
+fluffy::logging_file_manage: true
 fluffy::checks:
   ssh:
     type: tcp

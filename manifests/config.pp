@@ -1,5 +1,5 @@
 class fluffy::config {
-  file {[$fluffy::data_dir, $fluffy::config_dir, "${fluffy::config_dir}/rollback.d"]:
+  file {[$fluffy::data_dir, $fluffy::config_dir]:
     owner => "root",
     group => "root",
     mode => "0755",

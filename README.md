@@ -225,8 +225,6 @@ fluffy::rules:
 
 Rule ordering can be specified by using the following parameters: `before_rule`, `after_rule`.
 
-For instance, if you wanted to add a rule
-
 ##### `checks` (optional)
 Fluffy rollback checks in the form of {'check' => { .. }}
 
