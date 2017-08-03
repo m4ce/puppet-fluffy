@@ -25,13 +25,10 @@ The fluffy module allows to automate the configuration and deployment of Fluffy 
 
 ## Setup
 
-The module requires the [fluffy-ruby](https://rubygems.org/gems/fluffy-ruby) rubygem. It also requires Puppet >= 4.0.0.
+The module requires the [fluffy-ruby](https://rubygems.org/gems/fluffy-ruby) rubygem. It also requires Puppet >= 4.10.0.
 
-If you are using Puppet AIO, you may want to include the gem as part of the base installation. If not, you can install it as follows:
-
-```
-/opt/puppetlabs/puppet/bin/gem install fluffy-ruby
-```
+The providers make use of some language features only available in Ruby 2.x. By default, Puppet Server uses a version of the JRuby 1.7 series which conforms to MRI/Ruby language 1.9.
+However, you will need to configure Puppet Server to instead use the JRuby 9k series in order to support Ruby 2.x. For more information, [read here](https://docs.puppet.com/puppetserver/latest/configuration.html#enabling-jruby-9k).
 
 The include the main class as follows:
 
