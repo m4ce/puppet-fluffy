@@ -55,6 +55,7 @@ class fluffy (
     fluffy_rule {$rule_name:
       * => $rule
     }
+  }
 
   $checks.each |String $check_name, Fluffy::Check $check| {
     fluffy_check {$check_name:

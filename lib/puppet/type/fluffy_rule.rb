@@ -30,14 +30,6 @@ Puppet::Type.newtype(:fluffy_rule) do
     desc 'Rule index'
   end
 
-  newparam(:before_rule) do
-    desc 'Add the new rule before the specified rule name'
-  end
-
-  newparam(:after_rule) do
-    desc 'Add the new rule after the specified rule name'
-  end
-
   newproperty(:action) do
     desc 'Rule action'
 
@@ -502,19 +494,8 @@ Puppet::Type.newtype(:fluffy_rule) do
   end
 
 
-  autorequire(:fluffy_rule) do
-    if self[:before_rule]
-      [self[:before_rule]]
-    elsif self[:after_rule]
-      [self[:after_rule]]
-    else
-      []
-    end
-  end
-
   validate do
     if self[:ensure] != :absent
-      fail "Before and after rule cannot be used at the same time for #{self[:name]}" if self[:before_rule] and self[:after_rule]
       fail "Either jump or action are required for #{self[:name]}" unless self[:action] or self[:jump]
     end
   end

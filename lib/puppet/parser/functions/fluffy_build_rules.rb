@@ -4,26 +4,28 @@ Return a ordered list of Fluffy rules
 EOS
   ) do |arguments|
 
-    raise Puppet::ParseError, "fluffy_build_rules():  Wrong number of arguments given (#{arguments.size} for 1)") if arguments.size < 1
+    raise Puppet::ParseError, "fluffy_build_rules(): Wrong number of arguments given (#{arguments.size} for 1)") if arguments.size < 1
 
     ordered_rules = {}
     rules = arguments[0]
 
     rules_keys = rules.keys
     rules.each do |name, rule|
+      if rule['before_rule'] and rule['after_rule']
+        raise Puppet::ParseError, "fluffy_build_rules(): 'before_rule' and 'after_rule' cannot be used together in rule #{name}"
       if rule['before_rule']
         if rules[rule['before_rule']]
           rules_keys.delete(name)
           rules_keys.insert(rules_keys.index(rule['before_rule']), name)
         else
-          raise Puppet::ParseError, "fluffy_build_rules(): Failed to look up rule #{rule['before_rule']}"
+          raise Puppet::ParseError, "fluffy_build_rules(): Failed to look up before_rule #{rule['before_rule']} in rule #{name}"
         end
       elsif rule['after_rule']
         if rules[rule['after_rule']]
           rules_keys.delete(name)
           rules_keys.insert(rules_keys.index(rule['after_rule']) + 1, name)
         else
-          raise Puppet::ParseError, "fluffy_build_rules(): Failed to look up rule #{rule['after_rule']}"
+          raise Puppet::ParseError, "fluffy_build_rules(): Failed to look up after rule #{rule['after_rule']} in rule #{name}"
         end
       end
     end
