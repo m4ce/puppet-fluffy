@@ -514,11 +514,10 @@ Puppet::Type.newtype(:fluffy_rule) do
     builtin_services = ['any']
     req = []
 
-    self[:src_service].each do |service|
-      req << service unless builtin_services.include?(service)
-    end
-    self[:dst_service].each do |service|
-      req << service unless builtin_services.include?(service)
+    [:src_service, :dst_service].each do |k|
+      self[k].each do |service|
+        req << service unless builtin_services.include?(service)
+      end
     end
 
     req
@@ -528,17 +527,27 @@ Puppet::Type.newtype(:fluffy_rule) do
     builtin_interfaces = ['any']
     req = []
 
-    self[:in_interface].each do |in_interface|
-      req << in_interface unless builtin_interfaces.include?(in_interface)
-    end
-
-    self[:out_interface].each do |out_interface|
-      req << out_interface unless builtin_interfaces.include?(out_interface)
+    [:in_interface, :out_interface].each do |k|
+      self[k].each do |interface|
+        req << interface unless builtin_interfaces.include?(interface)
+      end
     end
 
     req
   end
 
+  autorequire(:fluffy_address) do
+    reserved_addresses = ['any', 'any_broadcast']
+    req = []
+
+    [:src_address, :dst_address, :src_address_range, :dst_address_range].each do |k|
+      self[k].each do |address|
+        req << address unless reserved_addresses.include?(address)
+      end
+    end
+
+    req
+  end
 
   validate do
     if self[:ensure] != :absent
