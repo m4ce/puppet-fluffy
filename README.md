@@ -157,35 +157,46 @@ Fluffy rules in the form of {'table:chain:rule' => { .. }}.
 
 Defaults to:
 ```yaml
-fluffy::rules:
+  "filter:INPUT:invalid_state":
+    order: 0
+    ctstate:
+      - 'INVALID'
+    in_interface: 'any'
+    jump: 'INPUT_LOGGING'
   "filter:FORWARD:invalid_state":
+    order: 0
     ctstate:
       - 'INVALID'
     in_interface: 'any'
     jump: 'FORWARD_LOGGING'
     out_interface: 'any'
-  "filter:INPUT:invalid_state":
-    chain: 'INPUT'
+  "filter:INPUT:established":
+    order: 10
+    action: 'ACCEPT'
     ctstate:
-      - 'INVALID'
+      - 'ESTABLISHED'
+      - 'RELATED'
     in_interface: 'any'
-    jump: 'INPUT_LOGGING'
-  "filter:INPUT:input_established":
+  "filter:FORWARD:established":
+    order: 10
     action: 'ACCEPT'
     ctstate:
       - 'ESTABLISHED'
       - 'RELATED'
     in_interface: 'any'
   "filter:INPUT:antispoof":
+    order: 20
     action: 'DROP'
-    in_interface: 'lo'
+    in_interface: 'loopback'
     negate_src_address: true
     src_address:
       - 'loopback_net'
   "filter:INPUT:loopback":
+    order: 30
     action: 'ACCEPT'
-    in_interface: 'lo'
+    in_interface: 'loopback'
   "filter:INPUT:ssh_admins":
+    order: 50
     action: 'ACCEPT'
     comment: 'Allow SSH in'
     dst_service:
@@ -194,6 +205,7 @@ fluffy::rules:
     src_address:
       - 'admins'
   "filter:INPUT:fluffy_api":
+    order: 50
     action: 'ACCEPT'
     comment: 'Allow access to Fluffy REST API'
     dst_service:
@@ -202,13 +214,16 @@ fluffy::rules:
     src_address:
       - 'admins'
   "filter:FORWARD:logging":
+    order: 900
     in_interface: 'any'
     jump: 'FORWARD_LOGGING'
     out_interface: 'any'
   "filter:INPUT:logging":
+    order: 900
     in_interface: 'any'
     jump: 'INPUT_LOGGING'
   "filter:FORWARD_LOGGING:logging_log":
+    order: 999
     action: 'LOG'
     in_interface: 'any'
     limit: '2/min'
@@ -216,6 +231,7 @@ fluffy::rules:
     log_prefix: 'Fluffy CHAIN=FORWARD '
     out_interface: 'any'
   "filter:INPUT_LOGGING:logging_log":
+    order: 999
     action: 'LOG'
     in_interface: 'any'
     limit: '2/min'
@@ -223,7 +239,7 @@ fluffy::rules:
     log_prefix: 'Fluffy CHAIN=INPUT '
 ```
 
-Rule ordering can be specified by using the `index` parameter.
+Rule ordering can be specified by using the `order` parameter.
 
 ##### `checks` (optional)
 Fluffy rollback checks in the form of {'check' => { .. }}
@@ -385,7 +401,7 @@ Rule packet filtering table
 Rule chain name
 
 ##### `index` (optional)
-Specify the rule position by index. By default, the rule will be added at the end (append).
+Specify the rule position by index. Avoid using it in favour of the `order` parameter in Hiera.
 
 ##### `action` (optional)
 Rule action. Valid values are: `absent`, `ACCEPT`, `DROP`, `REJECT`, `QUEUE`, `RETURN`, `DNAT`, `SNAT`, `LOG`, `MASQUERADE`, `REDIRECT`, `MARK`, `TCPMSS`. Defaults to `absent`.

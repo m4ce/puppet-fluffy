@@ -56,7 +56,7 @@ class fluffy (
     }
   }
 
-  fluffy_build_rules($rules).each |String $rule_name, Fluffy::Rule $rule| {
+  fluffy_build_rules($rules).each |String $rule_name, Hash $rule| {
     fluffy_rule {$rule_name:
       * => $rule,
       require => Fluffy_purge["rules"]

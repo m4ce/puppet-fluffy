@@ -1,9 +1,8 @@
 type Fluffy::Rule = Struct[{
+  order => Integer,
   Optional[chain] => String,
   Optional[table] => Enum["filter", "nat", "mangle", "raw", "security"],
   Optional[index] => Integer,
-  Optional[before_rule] => String,
-  Optional[after_rule] => String,
   Optional[action] => Enum['absent', 'ACCEPT', 'DROP', 'REJECT', 'QUEUE', 'RETURN', 'DNAT', 'SNAT', 'LOG', 'MASQUERADE', 'REDIRECT', 'MARK', 'TCPMSS'],
   Optional[jump] => String,
   Optional[negate_protocol] => Boolean,
