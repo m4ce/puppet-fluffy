@@ -101,6 +101,7 @@ fluffy::rules:
       - 'ESTABLISHED'
       - 'RELATED'
     in_interface: 'any'
+    out_interface: 'any'
   "filter:INPUT:antispoof":
     order: 20
     action: 'DROP'
