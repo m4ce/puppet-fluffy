@@ -223,7 +223,7 @@ fluffy::rules:
     log_prefix: 'Fluffy CHAIN=INPUT '
 ```
 
-Rule ordering can be specified by using the following parameters: `before_rule`, `after_rule`.
+Rule ordering can be specified by using the `index` parameter.
 
 ##### `checks` (optional)
 Fluffy rollback checks in the form of {'check' => { .. }}
@@ -385,7 +385,7 @@ Rule packet filtering table
 Rule chain name
 
 ##### `index` (optional)
-Add the new rule at the given index. By default, the rule will be added right at the end.
+Specify the rule position by index. By default, the rule will be added at the end (append).
 
 ##### `action` (optional)
 Rule action. Valid values are: `absent`, `ACCEPT`, `DROP`, `REJECT`, `QUEUE`, `RETURN`, `DNAT`, `SNAT`, `LOG`, `MASQUERADE`, `REDIRECT`, `MARK`, `TCPMSS`. Defaults to `absent`.
