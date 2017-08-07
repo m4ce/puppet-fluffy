@@ -28,9 +28,9 @@ class fluffy (
   Enum["present", "absent", "stopped", "running"] $service_ensure,
   Boolean $service_enable
 ) {
-  #include fluffy::install
-  #include fluffy::config
-  #include fluffy::service
+  include fluffy::install
+  include fluffy::config
+  include fluffy::service
 
   $addressbook.each |String $address_name, Fluffy::Address $address| {
     fluffy_address {$address_name:
