@@ -6,34 +6,29 @@ EOS
 
     raise Puppet::ParseError, "fluffy_build_rules(): Wrong number of arguments given (#{arguments.size} for 1)" if arguments.size < 1
 
-    ordered_rules = {}
     rules = arguments[0]
 
-    rules_keys = rules.keys
+    indexes = rules.select { |k, v| v['index'] }.map { |k, v| v['index'] }
+    duplicates = indexes.count { |i| indexes.count(i) > 1 }
+    raise Puppet::ParseError, "fluffy_build_rules(): Found duplicate indexes in rules" if duplicates > 0
+
+    ordered_keys = rules.keys
     rules.each do |name, rule|
-      if rule['before_rule'] and rule['after_rule']
-        raise Puppet::ParseError, "fluffy_build_rules(): 'before_rule' and 'after_rule' cannot be used together in rule #{name}"
-      elsif rule['before_rule']
-        if rules[rule['before_rule']]
-          rules_keys.delete(name)
-          rules_keys.insert(rules_keys.index(rule['before_rule']), name)
-        else
-          raise Puppet::ParseError, "fluffy_build_rules(): Failed to look up before_rule #{rule['before_rule']} in rule #{name}"
-        end
-      elsif rule['after_rule']
-        if rules[rule['after_rule']]
-          rules_keys.delete(name)
-          rules_keys.insert(rules_keys.index(rule['after_rule']) + 1, name)
-        else
-          raise Puppet::ParseError, "fluffy_build_rules(): Failed to look up after rule #{rule['after_rule']} in rule #{name}"
+      if rule['index']
+        raise Puppet::ParseError, "fluffy_build_rules(): Found out of range rule index" if rule['index'] > rules.size
+
+        if ordered_keys[rule['index']] != name
+          ordered_keys.delete(name)
+          ordered_keys.insert(rule['index'], name)
         end
       end
     end
 
-    rules_keys.each_with_index do |rule, index|
-      ordered_rules[rule] = rules[rule].merge({'index' => index}).reject { |k| ['before_rule', 'after_rule'].include?(k) }
+    ordered_rules = {}
+    ordered_keys.each_with_index do |rule, index|
+      ordered_rules[rule] = rules[rule].merge({'index' => index})
     end
 
-    return ordered_rules
+    ordered_rules
   end
 end
