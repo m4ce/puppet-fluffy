@@ -26,12 +26,6 @@ Puppet::Type.newtype(:fluffy_address) do
     end
   end
 
-  validate do
-    if self[:ensure] != :absent
-      fail("Fluffy address required for #{self[:name]}") unless self[:address]
-    end
-  end
-
   autonotify(:fluffy_commit) do
     ['puppet']
   end
@@ -40,16 +34,18 @@ Puppet::Type.newtype(:fluffy_address) do
     reserved_addresses = ['any', 'any_broadcast']
 
     req = []
-    self[:address].each do |address|
-      # is the address a valid CIDR ..?
-      next if address =~ /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))?$/
-      # is the address a valid IPRange ..?
-      next if address =~ /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])-(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
-      # are we dealing with a reserved address ..?
-      next if reserved_addresses.include?(address)
+    if self[:address]
+      self[:address].each do |address|
+        # is the address a valid CIDR ..?
+        next if address =~ /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))?$/
+        # is the address a valid IPRange ..?
+        next if address =~ /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])-(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
+        # are we dealing with a reserved address ..?
+        next if reserved_addresses.include?(address)
 
-      # autorequire the address
-      req << address
+        # autorequire the address
+        req << address
+      end
     end
     req
   end

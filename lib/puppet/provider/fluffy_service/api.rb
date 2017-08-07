@@ -55,7 +55,11 @@ Puppet::Type.type(:fluffy_service).provide(:api) do
   end
 
   def destroy
-    session.services.delete(name: resource[:name])
+    begin
+      session.services.delete(name: resource[:name])
+    rescue ::Fluffy::APIError => e
+      fail "#{e.message} (#{e.error})"
+    end
     @property_hash.clear
   end
 

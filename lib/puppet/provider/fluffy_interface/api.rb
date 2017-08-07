@@ -53,7 +53,11 @@ Puppet::Type.type(:fluffy_interface).provide(:api) do
   end
 
   def destroy
-    session.interfaces.delete(name: resource[:name])
+    begin
+       session.interfaces.delete(name: resource[:name])
+    rescue Exception => e
+       fail "#{e.message} (#{e.error})"
+    end
     @property_hash.clear
   end
 

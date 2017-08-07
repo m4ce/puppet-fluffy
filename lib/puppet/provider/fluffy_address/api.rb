@@ -53,7 +53,11 @@ Puppet::Type.type(:fluffy_address).provide(:api) do
   end
 
   def destroy
-    session.addressbook.delete(name: resource[:name])
+    begin
+      session.addressbook.delete(name: resource[:name])
+    rescue ::Fluffy::APIError => e
+      fail "#{e.message} (#{e.error})"
+    end
     @property_hash.clear
   end
 

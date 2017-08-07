@@ -50,16 +50,10 @@ fluffy::interfaces:
   loopback:
     interface: 'lo'
 fluffy::chains:
-  "filter:FORWARD":
-    policy: 'DROP'
   "filter:FORWARD_LOGGING":
-    policy: 'ACCEPT'
-  "filter:INPUT":
-    policy: 'DROP'
+    policy: RETURN
   "filter:INPUT_LOGGING":
-    policy: 'ACCEPT'
-  "filter:OUTPUT":
-    policy: 'ACCEPT'
+    policy: RETURN
 fluffy::services:
   dhcp:
     src_port:
@@ -80,70 +74,75 @@ fluffy::services:
       - 22
     protocol: 'tcp'
 fluffy::rules:
- "filter:INPUT:invalid_state":
-   chain: 'INPUT'
-   ctstate:
-     - 'INVALID'
-   in_interface: 'any'
-   jump: 'INPUT_LOGGING'
- "filter:FORWARD:invalid_state":
-   ctstate:
-     - 'INVALID'
-   in_interface: 'any'
-   jump: 'FORWARD_LOGGING'
-   out_interface: 'any'
- "filter:INPUT:established":
-   action: 'ACCEPT'
-   ctstate:
-     - 'ESTABLISHED'
-     - 'RELATED'
-   in_interface: 'any'
- "filter:INPUT:antispoof":
-   action: 'DROP'
-   in_interface: 'loopback'
-   negate_src_address: true
-   src_address:
-     - 'loopback_net'
- "filter:INPUT:loopback":
-   action: 'ACCEPT'
-   in_interface: 'loopback'
- "filter:INPUT:ssh_admins":
-   action: 'ACCEPT'
-   comment: 'Allow SSH in'
-   dst_service:
-     - 'ssh'
-   in_interface: 'any'
-   src_address:
-     - 'admins'
- "filter:INPUT:fluffy_api":
-   action: 'ACCEPT'
-   comment: 'Allow access to Fluffy REST API'
-   dst_service:
-     - 'fluffy_api'
-   in_interface: 'any'
-   src_address:
-     - 'admins'
- "filter:FORWARD:logging":
-   in_interface: 'any'
-   jump: 'FORWARD_LOGGING'
-   out_interface: 'any'
- "filter:INPUT:logging":
-   in_interface: 'any'
-   jump: 'INPUT_LOGGING'
- "filter:FORWARD_LOGGING:logging_log":
-   action: 'LOG'
-   in_interface: 'any'
-   limit: '2/min'
-   log_level: 'warning'
-   log_prefix: 'Fluffy CHAIN=FORWARD '
-   out_interface: 'any'
- "filter:INPUT_LOGGING:logging_log":
-   action: 'LOG'
-   in_interface: 'any'
-   limit: '2/min'
-   log_level: 'warning'
-   log_prefix: 'Fluffy CHAIN=INPUT '
+  "filter:INPUT:invalid_state":
+    chain: 'INPUT'
+    ctstate:
+      - 'INVALID'
+    in_interface: 'any'
+    jump: 'INPUT_LOGGING'
+  "filter:FORWARD:invalid_state":
+    ctstate:
+      - 'INVALID'
+    in_interface: 'any'
+    jump: 'FORWARD_LOGGING'
+    out_interface: 'any'
+  "filter:INPUT:established":
+    action: 'ACCEPT'
+    ctstate:
+      - 'ESTABLISHED'
+      - 'RELATED'
+    in_interface: 'any'
+  "filter:INPUT:antispoof":
+    action: 'DROP'
+    in_interface: 'loopback'
+    negate_src_address: true
+    src_address:
+      - 'loopback_net'
+  "filter:INPUT:loopback":
+    action: 'ACCEPT'
+    in_interface: 'loopback'
+  "filter:INPUT:ssh_admins":
+    action: 'ACCEPT'
+    comment: 'Allow SSH in'
+    dst_service:
+      - 'ssh'
+    in_interface: 'any'
+    src_address:
+      - 'admins'
+  "filter:INPUT:fluffy_api":
+    action: 'ACCEPT'
+    comment: 'Allow access to Fluffy REST API'
+    dst_service:
+      - 'fluffy_api'
+    in_interface: 'any'
+    src_address:
+      - 'admins'
+  "filter:FORWARD:logging":
+    in_interface: 'any'
+    jump: 'FORWARD_LOGGING'
+    out_interface: 'any'
+  "filter:INPUT:logging":
+    in_interface: 'any'
+    jump: 'INPUT_LOGGING'
+  "filter:FORWARD_LOGGING:logging_log":
+    action: 'LOG'
+    in_interface: 'any'
+    limit: '2/min'
+    log_level: 'warning'
+    log_prefix: 'Fluffy CHAIN=FORWARD '
+    out_interface: 'any'
+  "filter:INPUT_LOGGING:logging_log":
+    action: 'LOG'
+    in_interface: 'any'
+    limit: '2/min'
+    log_level: 'warning'
+    log_prefix: 'Fluffy CHAIN=INPUT '
 fluffy::purge_rules: true
+fluffy::purge_chains: true
+fluffy::purge_addressbook: true
+fluffy::purge_services: true
+fluffy::purge_checks: true
+fluffy::purge_interfaces: true
 fluffy::data_dir: "/var/lib/fluffy"
 fluffy::config_dir: "/etc/fluffy"
 fluffy::config_file: "%{lookup('fluffy::config_dir')}/fluffy.yaml"

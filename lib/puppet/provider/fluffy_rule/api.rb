@@ -22,6 +22,7 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
     rules = session.rules.get
     rules.each do |name, rule|
       instances << new(
+        :name => name,
         :rule => name.split(':', 3)[2],
         :table => rule['table'].to_sym,
         :chain => rule['chain'],
@@ -43,9 +44,9 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
         :negate_dst_address_range => rule['negate_dst_address_range'] ? :true : :false,
         :dst_address_range => rule['dst_address_range'],
         :negate_in_interface => rule['negate_in_interface'] ? :true : :false,
-        :in_interface => rule['in_interface'] || nil,
+        :in_interface => rule['in_interface'],
         :negate_out_interface => rule['negate_out_interface'] ? :true : :false,
-        :out_interface => rule['out_interface'] || nil,
+        :out_interface => rule['out_interface'],
         :negate_src_address => rule['negate_src_address'] ? :true : :false,
         :src_address => rule['src_address'],
         :negate_dst_address => rule['negate_dst_address'] ? :true : :false,
@@ -106,9 +107,9 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
         :negate_dst_address_range => resource[:negate_dst_address_range] == :true ? true : false,
         :dst_address_range => resource[:dst_address_range],
         :negate_in_interface => resource[:negate_in_interface] == :true ? true : false,
-        :in_interface => resource[:in_interface] != :absent ? resource[:in_interface] : nil,
+        :in_interface => resource[:in_interface],
         :negate_out_interface => resource[:negate_out_interface] == :true ? true : false,
-        :out_interface => resource[:out_interface] != :absent ? resource[:out_interface] : nil,
+        :out_interface => resource[:out_interface],
         :negate_src_address => resource[:negate_src_address] == :true ? true : false,
         :src_address => resource[:src_address],
         :negate_dst_address => resource[:negate_dst_address] == :true ? true : false,
@@ -129,7 +130,7 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
         :comment => resource[:comment] != :absent ? resource[:comment] : nil
       }
 
-      session.rules.add(name: "#{resource[:table]}:#{resource[:chain].downcase}:#{resource[:rule]}", **rule)
+      session.rules.add(name: "#{resource[:table]}:#{resource[:chain]}:#{resource[:rule]}", **rule)
     rescue ::Fluffy::APIError => e
       fail "#{e.message} (#{e.error})"
     end
@@ -138,7 +139,11 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
   end
 
   def destroy
-    session.rules.delete(name: "#{resource[:table]}:#{resource[:chain].downcase}:#{resource[:rule]}")
+    begin
+      session.rules.delete(name: "#{resource[:table]}:#{resource[:chain]}:#{resource[:rule]}")
+    rescue ::Fluffy::APIError => e
+      fail "#{e.message} (#{e.error})"
+    end
     @property_hash.clear
   end
 
@@ -219,7 +224,7 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
   end
 
   def in_interface=(value)
-    @property_flush[:in_interface] = (value != :absent) ? value : nil
+    @property_flush[:in_interface] = value
   end
 
   def negate_in_interface=(value)
@@ -227,7 +232,7 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
   end
 
   def out_interface=(value)
-    @property_flush[:out_interface] = (value != :absent) ? value : nil
+    @property_flush[:out_interface] = value
   end
 
   def negate_out_interface=(value)
@@ -309,7 +314,7 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
   def flush
     unless @property_flush.empty?
       begin
-        session.rules.update(name: "#{resource[:table]}:#{resource[:chain].downcase}:#{resource[:rule]}", **@property_flush)
+        session.rules.update(name: "#{resource[:table]}:#{resource[:chain]}:#{resource[:rule]}", **@property_flush)
       rescue ::Fluffy::APIError => e
         fail "#{e.message} (#{e.error})"
       end

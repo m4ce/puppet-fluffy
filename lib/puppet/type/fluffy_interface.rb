@@ -14,12 +14,6 @@ Puppet::Type.newtype(:fluffy_interface) do
     desc 'Network interface'
   end
 
-  validate do
-    if self[:ensure] != :absent
-      raise ArgumentError, "Fluffy interface required for #{self[:name]}" unless self[:interface]
-    end
-  end
-
   autonotify(:fluffy_commit) do
     ['puppet']
   end

@@ -439,13 +439,13 @@ Destination range address(es). Addresses must be valid IP ranges. Defaults to `[
 Negate input interface. Defaults to `false`.
 
 ##### `in_interface` (optional)
-Input interface. Defaults to `absent`.
+Input interface(s). Defaults to `[]`.
 
 ##### `negate_out_interface` (optional)
 Negate output interface. Defaults to `false`.
 
 ##### `out_interface` (optional)
-Input interface. Defaults to `absent`.
+Output interface(s). Defaults to `[]`.
 
 ##### `negate_src_address` (optional)
 Negate source address(es). Defaults to `false`.

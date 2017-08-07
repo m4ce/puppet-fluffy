@@ -6,6 +6,10 @@ class fluffy (
   Fluffy::Services $services,
   Fluffy::Chains $chains,
   Fluffy::Rules $rules,
+  Boolean $purge_addressbook,
+  Boolean $purge_interfaces,
+  Boolean $purge_services,
+  Boolean $purge_chains,
   Boolean $purge_rules,
   String $data_dir,
   String $config_dir,
@@ -24,9 +28,9 @@ class fluffy (
   Enum["present", "absent", "stopped", "running"] $service_ensure,
   Boolean $service_enable
 ) {
-  include fluffy::install
-  include fluffy::config
-  include fluffy::service
+  #include fluffy::install
+  #include fluffy::config
+  #include fluffy::service
 
   $addressbook.each |String $address_name, Fluffy::Address $address| {
     fluffy_address {$address_name:
@@ -52,13 +56,10 @@ class fluffy (
     }
   }
 
-  resources {'fluffy_rule':
-    purge => $purge_rules
-  }
-
   fluffy_build_rules($rules).each |String $rule_name, Fluffy::Rule $rule| {
     fluffy_rule {$rule_name:
-      * => $rule
+      * => $rule,
+      require => Fluffy_purge["rules"]
     }
   }
 
@@ -66,6 +67,26 @@ class fluffy (
     fluffy_check {$check_name:
       * => $check
     }
+  }
+
+  fluffy_purge {"addressbook":
+    purge => $purge_addressbook
+  }
+
+  fluffy_purge {"interfaces":
+    purge => $purge_interfaces
+  }
+
+  fluffy_purge {"services":
+    purge => $purge_services
+  }
+
+  fluffy_purge {"chains":
+    purge => $purge_chains
+  }
+
+  fluffy_purge {"rules":
+    purge => $purge_rules
   }
 
   # These will only kick off when refreshed.

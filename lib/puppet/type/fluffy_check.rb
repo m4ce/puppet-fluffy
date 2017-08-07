@@ -52,7 +52,6 @@ Puppet::Type.newtype(:fluffy_check) do
 
   validate do
     if self[:ensure] != :absent
-      fail("Check type is required in #{self[:name]}") if self[:type].nil?
       fail("Command is required for exec check types in #{self[:name]}") if self[:type] == :exec and self[:command] == :absent
     end
   end

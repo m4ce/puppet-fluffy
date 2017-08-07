@@ -64,14 +64,9 @@ Puppet::Type.newtype(:fluffy_service) do
 
   newproperty(:protocol) do
     desc 'Network protocol'
+
     defaultto(:all)
     newvalues(:ip,:tcp,:udp,:icmp,'ipv6-icmp',:esp,:ah,:vrrp,:igmp,:ipencap,:ipv4,:ipv6,:ospf,:gre,:cbt,:sctp,:pim,:all)
-  end
-
-  validate do
-    if self[:ensure] != :absent
-      fail("Either source or destination ports are required for #{self[:name]}") if !self[:dst_port].size and !self[:src_port].size
-    end
   end
 
   autonotify(:fluffy_commit) do

@@ -22,6 +22,7 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
     chains.each do |table_name, table|
       table.each do |chain_name, chain|
         instances << new(
+          :name => "#{table_name}:#{chain_name}",
           :chain => chain_name,
           :table => table_name.to_sym,
           :policy => chain['policy'],
@@ -56,7 +57,11 @@ Puppet::Type.type(:fluffy_chain).provide(:api) do
   end
 
   def destroy
-    session.chains.delete(name: resource[:chain], table: resource[:table])
+    begin
+      session.chains.delete(name: resource[:chain], table: resource[:table])
+    rescue ::Fluffy::APIError => e
+      fail "#{e.message} (#{e.error})"
+    end
     @property_hash.clear
   end
 

@@ -223,10 +223,30 @@ Puppet::Type.newtype(:fluffy_rule) do
     newvalues(:true,:false)
   end
 
-  newproperty(:in_interface) do
+  newproperty(:in_interface, :array_matching => :all) do
     desc 'Input interface'
 
-    defaultto(:absent)
+    def insync?(is)
+      is.each do |value|
+        return false unless @should.include?(value)
+      end
+
+      @should.each do |value|
+        return false unless is.include?(value)
+      end
+
+      true
+    end
+
+    def should_to_s(newvalue = @should)
+      if newvalue
+        newvalue.inspect
+      else
+        nil
+      end
+    end
+
+    defaultto([])
   end
 
   newproperty(:negate_out_interface, :boolean => true) do
@@ -236,10 +256,30 @@ Puppet::Type.newtype(:fluffy_rule) do
     newvalues(:true,:false)
   end
 
-  newproperty(:out_interface) do
+  newproperty(:out_interface, :array_matching => :all) do
     desc 'Output interface'
 
-    defaultto(:absent)
+    def insync?(is)
+      is.each do |value|
+        return false unless @should.include?(value)
+      end
+
+      @should.each do |value|
+        return false unless is.include?(value)
+      end
+
+      true
+    end
+
+    def should_to_s(newvalue = @should)
+      if newvalue
+        newvalue.inspect
+      else
+        nil
+      end
+    end
+
+    defaultto([])
   end
 
   newproperty(:negate_src_address, :boolean => true) do
@@ -488,8 +528,14 @@ Puppet::Type.newtype(:fluffy_rule) do
     builtin_interfaces = ['any']
     req = []
 
-    req << self[:in_interface] if self[:in_interface] and !builtin_interfaces.include?(self[:in_interface])
-    req << self[:out_interface] if self[:out_interface] and !builtin_interfaces.include?(self[:out_interface])
+    self[:in_interface].each do |in_interface|
+      req << in_interface unless builtin_interfaces.include?(in_interface)
+    end
+
+    self[:out_interface].each do |out_interface|
+      req << out_interface unless builtin_interfaces.include?(out_interface)
+    end
+
     req
   end
 
