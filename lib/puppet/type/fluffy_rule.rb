@@ -50,11 +50,36 @@ Puppet::Type.newtype(:fluffy_rule) do
     newvalues(:true,:false)
   end
 
-  newproperty(:protocol) do
-    desc 'Network protocol'
+  newproperty(:protocol, :array_matching => :all) do
+    desc 'Network protocol(s)'
 
-    defaultto(:absent)
-    newvalues(:absent,:ip,:tcp,:udp,:icmp,'ipv6-icmp',:esp,:ah,:vrrp,:igmp,:ipencap,:ipv4,:ipv6,:ospf,:gre,:cbt,:sctp,:pim,:all)
+    def insync?(is)
+      is.each do |value|
+        return false unless @should.include?(value)
+      end
+
+      @should.each do |value|
+        return false unless is.include?(value)
+      end
+
+      true
+    end
+
+    def should_to_s(newvalue = @should)
+      if newvalue
+        newvalue.inspect
+      else
+        nil
+      end
+    end
+
+    validate do |value|
+      value.each do |proto|
+        fail "Invalid protocol '#{proto}' in #{self[:name]}" unless ['ip','tcp','udp','icmp','ipv6-icmp','esp','ah','vrrp','igmp','ipencap','ipv4','ipv6','ospf','gre','cbt','sctp','pim','any'].include?(proto)
+      end
+    end
+
+    defaultto([])
   end
 
   newproperty(:negate_icmp_type, :boolean => true) do
