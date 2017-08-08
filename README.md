@@ -419,7 +419,7 @@ Network protocol. Valid values are: `absent`, `ip`, `tcp`, `udp`, `icmp`, `ipv6-
 Negate ICMP type. Defaults to `false`.
 
 ##### `icmp_type` (optional)
-ICMP type. Valid values are: `absent`, `any`, `echo-reply`, `echo-request`. Defaults to `absent`.
+ICMP type. Valid values are: `absent`, `any`, `echo-reply`, `destination-unreachable`, `network-unreachable`, `host-unreachable`, `protocol-unreachable`, `port-unreachable`, `fragmentation-needed`, `source-route-failed`, `network-unknown`, `host-unknown`, `network-prohibited`, `host-prohibited`, `TOS-network-unreachable`, `TOS-host-unreachable`, `communication-prohibited`, `host-precedence-violation`, `precedence-cutoff`, `source-quench`, `redirect`, `network-redirect`, `host-redirect`, `TOS-network-redirect`, `TOS-host-redirect`, `echo-request`, `router-advertisement`, `router-solicitation`, `time-exceeded`, `ttl-zero-during-transit`, `ttl-zero-during-reassembly`, `parameter-problem`, `ip-header-bad`, `required-option-missing`, `timestamp-request`, `timestamp-reply`, `address-mask-request`, `address-mask-reply`. Defaults to `absent`.
 
 ##### `negate_tcp_flags` (optional)
 Negate TCP flags. Defaults to `false`.
