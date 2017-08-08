@@ -56,22 +56,22 @@ fluffy::chains:
     policy: RETURN
 fluffy::services:
   dhcp:
-    src_port:
-      - '67:68'
-    dst_port:
-      - '67:68'
+    src_port: '67:68'
+    dst_port: '67:68'
     protocol: udp
   fluffy_api:
-    dst_port:
-      - 8676
+    dst_port: 8676
     protocol: tcp
   smtp:
-    dst_port:
-      - 25
+    dst_port: 25
     protocol: tcp
   ssh:
+    dst_port: 22
+    protocol: tcp
+  web:
     dst_port:
-      - 22
+      - 80
+      - 443
     protocol: tcp
 fluffy::rules:
   "filter:INPUT:invalid_state":
