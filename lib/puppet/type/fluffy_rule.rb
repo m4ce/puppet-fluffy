@@ -74,9 +74,7 @@ Puppet::Type.newtype(:fluffy_rule) do
     end
 
     validate do |value|
-      value.each do |proto|
-        fail "Invalid protocol '#{proto}' in #{self[:name]}" unless ['ip','tcp','udp','icmp','ipv6-icmp','esp','ah','vrrp','igmp','ipencap','ipv4','ipv6','ospf','gre','cbt','sctp','pim','any'].include?(proto)
-      end
+      fail "Invalid protocol '#{value}' in #{self[:name]}" unless ['ip','tcp','udp','icmp','ipv6-icmp','esp','ah','vrrp','igmp','ipencap','ipv4','ipv6','ospf','gre','cbt','sctp','pim','any'].include?(value)
     end
 
     defaultto([])
