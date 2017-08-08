@@ -60,101 +60,95 @@ fluffy::services:
       - '67:68'
     dst_port:
       - '67:68'
-    protocol: 'udp'
+    protocol: udp
   fluffy_api:
     dst_port:
       - 8676
-    protocol: 'tcp'
+    protocol: tcp
   smtp:
     dst_port:
       - 25
-    protocol: 'tcp'
+    protocol: tcp
   ssh:
     dst_port:
       - 22
-    protocol: 'tcp'
+    protocol: tcp
 fluffy::rules:
   "filter:INPUT:invalid_state":
     order: 0
-    ctstate:
-      - 'INVALID'
-    in_interface: 'any'
-    jump: 'INPUT_LOGGING'
+    ctstate: INVALID
+    in_interface: any
+    jump: INPUT_LOGGING
   "filter:FORWARD:invalid_state":
     order: 0
-    ctstate:
-      - 'INVALID'
-    in_interface: 'any'
-    jump: 'FORWARD_LOGGING'
-    out_interface: 'any'
+    ctstate: INVALID
+    in_interface: any
+    out_interface: any
+    jump: FORWARD_LOGGING
   "filter:INPUT:established":
     order: 10
-    action: 'ACCEPT'
     ctstate:
-      - 'ESTABLISHED'
-      - 'RELATED'
-    in_interface: 'any'
+      - ESTABLISHED
+      - RELATED
+    in_interface: any
+    action: ACCEPT
   "filter:FORWARD:established":
     order: 10
-    action: 'ACCEPT'
     ctstate:
-      - 'ESTABLISHED'
-      - 'RELATED'
-    in_interface: 'any'
-    out_interface: 'any'
+      - ESTABLISHED
+      - RELATED
+    in_interface: any
+    out_interface: any
+    action: ACCEPT
   "filter:INPUT:antispoof":
     order: 20
-    action: 'DROP'
-    in_interface: 'loopback'
+    in_interface: loopback
     negate_src_address: true
-    src_address:
-      - 'loopback_net'
+    src_address: loopback_net
+    action: DROP
   "filter:INPUT:loopback":
     order: 30
-    action: 'ACCEPT'
-    in_interface: 'loopback'
+    action: ACCEPT
+    in_interface: loopback
   "filter:INPUT:ssh_admins":
     order: 50
-    action: 'ACCEPT'
     comment: 'Allow SSH in'
-    dst_service:
-      - 'ssh'
-    in_interface: 'any'
+    dst_service: ssh
+    in_interface: any
     src_address:
-      - 'admins'
+      - admins
+    action: ACCEPT
   "filter:INPUT:fluffy_api":
     order: 50
-    action: 'ACCEPT'
     comment: 'Allow access to Fluffy REST API'
-    dst_service:
-      - 'fluffy_api'
-    in_interface: 'any'
-    src_address:
-      - 'admins'
+    dst_service: fluffy_api
+    in_interface: any
+    src_address: admins
+    action: ACCEPT
   "filter:FORWARD:logging":
     order: 900
-    in_interface: 'any'
-    jump: 'FORWARD_LOGGING'
-    out_interface: 'any'
+    in_interface: any
+    out_interface: any
+    jump: FORWARD_LOGGING
   "filter:INPUT:logging":
     order: 900
-    in_interface: 'any'
-    jump: 'INPUT_LOGGING'
+    in_interface: any
+    jump: INPUT_LOGGING
   "filter:FORWARD_LOGGING:logging_log":
     order: 999
-    action: 'LOG'
-    in_interface: 'any'
+    in_interface: any
     limit: '2/min'
-    log_level: 'warning'
+    log_level: warning
     log_prefix: 'Fluffy CHAIN=FORWARD '
-    out_interface: 'any'
+    out_interface: any
+    action: LOG
   "filter:INPUT_LOGGING:logging_log":
     order: 999
-    action: 'LOG'
-    in_interface: 'any'
+    in_interface: any
     limit: '2/min'
-    log_level: 'warning'
+    log_level: warning
     log_prefix: 'Fluffy CHAIN=INPUT '
+    action: LOG
 fluffy::purge_rules: true
 fluffy::purge_chains: true
 fluffy::purge_addressbook: true
