@@ -60,19 +60,29 @@ fluffy::services:
     dst_port: '67:68'
     protocol: udp
   fluffy_api:
+    src_port: 8676
     dst_port: 8676
     protocol: tcp
   smtp:
+    src_port: 25
     dst_port: 25
     protocol: tcp
   ssh:
+    src_port: 22
     dst_port: 22
     protocol: tcp
   web:
+    src_port:
+      - 80
+      - 443
     dst_port:
       - 80
       - 443
     protocol: tcp
+  snmp:
+    src_port: 161
+    dst_port: 161
+    protocol: udp
 fluffy::rules:
   "filter:INPUT:invalid_state":
     order: 0
