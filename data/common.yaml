@@ -9,7 +9,7 @@ lookup_options:
   fluffy::services:
     merge:
       strategy: deep
-  fluffy::addresbook:
+  fluffy::addressbook:
     merge:
       strategy: hash
   fluffy::rules:
