@@ -403,6 +403,12 @@ Rule chain name
 ##### `index` (optional)
 Specify the rule position by index. Avoid using it in favour of the `order` parameter in Hiera.
 
+##### `before_rule` (optional)
+Specify that the rule should precede the given rule. Avoid using it in favour of the `order` parameter in Hiera.
+
+##### `after_rule` (optional)
+Specify that the rule should proceed the given rule. Avoid using it in favour of the `order` parameter in Hiera.
+
 ##### `action` (optional)
 Rule action. Valid values are: `absent`, `ACCEPT`, `DROP`, `REJECT`, `QUEUE`, `RETURN`, `DNAT`, `SNAT`, `LOG`, `MASQUERADE`, `REDIRECT`, `MARK`, `TCPMSS`. Defaults to `absent`.
 
