@@ -69,24 +69,28 @@ class fluffy (
     }
   }
 
+  fluffy_purge {"rules":
+    purge => $purge_rules
+  }
+
   fluffy_purge {"addressbook":
-    purge => $purge_addressbook
+    purge => $purge_addressbook,
+    require => Fluffy_purge["rules"]
   }
 
   fluffy_purge {"interfaces":
-    purge => $purge_interfaces
+    purge => $purge_interfaces,
+    require => Fluffy_purge["rules"]
   }
 
   fluffy_purge {"services":
-    purge => $purge_services
+    purge => $purge_services,
+    require => Fluffy_purge["rules"]
   }
 
   fluffy_purge {"chains":
-    purge => $purge_chains
-  }
-
-  fluffy_purge {"rules":
-    purge => $purge_rules
+    purge => $purge_chains,
+    require => Fluffy_purge["rules"]
   }
 
   # These will only kick off when refreshed.

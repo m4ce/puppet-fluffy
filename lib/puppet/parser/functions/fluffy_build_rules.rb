@@ -13,7 +13,9 @@ EOS
 
     ordered_rules = {}
     sorted_rules.keys.each_with_index do |rule, index|
-      ordered_rules[rule] = rules[rule].merge({'index' => index}).reject { |k, v| k == 'order' }
+      ordered_rules[rule] = rules[rule].merge({
+        'after_rule' => (index > 0) ? sorted_rules.keys[index - 1] : nil
+      }).reject { |k, v| k == 'order' }
     end
 
     ordered_rules

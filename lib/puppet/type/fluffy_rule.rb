@@ -26,8 +26,16 @@ Puppet::Type.newtype(:fluffy_rule) do
     newvalues(:filter,:nat,:mangle,:raw,:security)
   end
 
-  newproperty(:index) do
-    desc 'Rule index'
+  #newproperty(:index) do
+  #  desc 'Rule index'
+  #end
+
+  newproperty(:before_rule) do
+    desc 'Define the rule which should precede this'
+  end
+
+  newproperty(:after_rule) do
+    desc 'Define the rule which should proceed this'
   end
 
   newproperty(:action) do
@@ -569,6 +577,13 @@ Puppet::Type.newtype(:fluffy_rule) do
       end
     end
 
+    req
+  end
+
+  autorequire(:fluffy_rule) do
+    req = []
+    req << self[:after_rule] if self[:after_rule]
+    req << self[:before_rule] if self[:before_rule]
     req
   end
 

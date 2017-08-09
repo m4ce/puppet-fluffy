@@ -27,6 +27,8 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
         :table => rule['table'].to_sym,
         :chain => rule['chain'],
         :index => rule['index'],
+        :before_rule => rule['before_rule'],
+        :after_rule => rule['after_rule'],
         :action => rule['action'] ? rule['action'] : nil,
         :jump => rule['jump'] || nil,
         :negate_protocol => rule['negate_protocol'] ? :true : :false,
@@ -89,7 +91,9 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
       rule = {
         :table => resource[:table],
         :chain => resource[:chain],
-        :index => resource[:index],
+        #:index => resource[:index],
+        :before_rule => resource[:before_rule],
+        :after_rule => resource[:after_rule],
         :action => resource[:action] != :absent ? resource[:action] : nil,
         :jump => resource[:jump] != :absent ? resource[:jump] : nil,
         :negate_protocol => resource[:negate_protocol] == :true ? true : false,
@@ -155,8 +159,16 @@ Puppet::Type.type(:fluffy_rule).provide(:api) do
     @property_flush = {}
   end
 
-  def index=(value)
-    @property_flush[:index] = value
+  #def index=(value)
+  #  @property_flush[:index] = value
+  #end
+
+  def before_rule=(value)
+    @property_flush[:before_rule] = value
+  end
+
+  def after_rule=(value)
+    @property_flush[:after_rule] = value
   end
 
   def action=(value)
