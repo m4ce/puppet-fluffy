@@ -128,6 +128,7 @@ fluffy::rules:
     src_address:
       - admins
     action: ACCEPT
+    ensure: absent
   "filter:INPUT:fluffy_api":
     order: 50
     comment: 'Allow access to Fluffy REST API'

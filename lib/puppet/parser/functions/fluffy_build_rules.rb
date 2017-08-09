@@ -18,7 +18,8 @@ EOS
 
       while i > 0
         after_rule = sorted_rules[sorted_rules.keys[i]]
-        if after_rule[:ensure] and after_rule[:ensure] == :absent
+        if after_rule['ensure'] and after_rule['ensure'] == 'absent'
+          # skip this rule as it's marked as absent
           i -= 1
         else
           break
