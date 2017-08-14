@@ -28,7 +28,7 @@ EOS
 
       ordered_rules[rule] = rules[rule].merge({
         'after_rule' => (i >= 0) ? sorted_rules.keys[i] : nil
-      }).reject { |k, v| k == 'order' }
+      }).reject { |k, v| k == 'order' or (k == 'after_rule' and v.nil?) }
     end
 
     ordered_rules
